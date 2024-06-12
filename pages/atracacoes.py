@@ -7,6 +7,13 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
+st.set_page_config(
+    page_title="Port of Santos Container  Visualization",
+    page_icon="🏂",
+    layout="wide",
+    initial_sidebar_state="expanded")
+
+
 """
 Datasets
 https://www.kaggle.com/datasets/mexwell/world-port-index
@@ -47,7 +54,7 @@ https://sites.google.com/icmc.usp.br/apneto/teaching/mai5017-2024
 """
 
 
-movimentacao = pd.DataFrame(pd.read_csv('./0_Stagging/combined_file.csv', encoding='utf8', sep=","))
+movimentacao = pd.DataFrame(pd.read_csv('./Data/combined_file.csv', encoding='utf8', sep=","))
 
 movimentacao['Data'] = pd.to_datetime(movimentacao['Ano'].astype(str) + 
                                         movimentacao['Mes'].astype(str), format='%Y%m')
@@ -97,7 +104,7 @@ movimentacao['TerminalAjustado'].replace('USIMINAS - TPF', 'USIMINAS',  inplace=
 
 # PLot no mapa de santos
 
-terminaisSantos = pd.DataFrame(pd.read_csv('./0_Stagging/TerminaisSantos.csv', encoding='utf8', sep=";"))
+terminaisSantos = pd.DataFrame(pd.read_csv('./Data/TerminaisSantos.csv', encoding='utf8', sep=";"))
 
 terminaisSantos = terminaisSantos[terminaisSantos.Terminal != ""]
 
