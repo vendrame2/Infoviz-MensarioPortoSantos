@@ -1,0 +1,95 @@
+ """
+    Datasets
+    https://www.kaggle.com/datasets/mexwell/world-port-index
+    https://www.kaggle.com/datasets/rajkumarpandey02/world-wide-port-index-data
+    https://www.kaggle.com/datasets/sanjeetsinghnaik/ship-ports
+
+    REFs
+    Aula professora - https://www.youtube.com/watch?v=X5Ug5C3LfOo
+    https://www.youtube.com/playlist?list=PLTYhWEH3DGrQXAJc-BldYfnroDWzbfwtd
+
+    CODES
+    PLot lat Log in python - https://stackoverflow.com/questions/53233228/plot-latitude-longitude-from-csv-in-python-3-6
+    Geopandas - https://towardsdatascience.com/the-easiest-way-to-plot-data-from-pandas-on-a-world-map-1a62962a27f3
+    Map Flights - https://coderzcolumn.com/tutorials/data-science/how-to-create-connection-map-chart-in-python-jupyter-notebook-plotly-and-geopandas
+    https://tech.marksblogg.com/popular-airline-passenger-routes-2023.html
+    https://towardsdatascience.com/geopandas-101-plot-any-data-with-a-latitude-and-longitude-on-a-map-98e01944b972
+    https://towardsdatascience.com/using-python-to-create-a-world-map-from-a-list-of-country-names-cd7480d03b10
+    https://www.reddit.com/r/dataisbeautiful/comments/rkx7ww/opensource_airline_route_maps_from_1999_and_2018/?rdt=43412
+
+
+    Pendências: Localização de alguns portos
+    https://unece.org/trade/cefact/UNLOCODE-Download >> Base de download da POrt API
+    https://port-api.com/docs
+
+
+    ***
+    **python cluster points with less than x meters
+    ***
+    https://geoffboeing.com/2014/08/clustering-to-reduce-spatial-data-set-size/
+    https://stackoverflow.com/questions/53075481/how-do-i-cluster-a-list-of-geographic-points-by-distance
+    https://gis.stackexchange.com/questions/437344/python-geopandas-if-distance-between-each-point-and-its-neighbors-is-less-th
+    https://stackoverflow.com/questions/19375675/simple-way-of-fusing-a-few-close-points
+    https://kazumatsuda.medium.com/spatial-clustering-fa2ea5d035a3
+    https://kazumatsuda.medium.com/aggregating-information-of-two-overlaying-geodataframes-using-geopandas-with-code-example-dcee1df74e0e
+
+    https://sites.google.com/icmc.usp.br/apneto/teaching/mai5017-2024
+
+    """
+
+    
+"""
+df = pd.DataFrame(pd.read_csv('./Data/combined_file.csv', encoding='utf8', sep=","))
+
+# Título e Introdução
+st.title('Análise das Operações Portuárias')
+st.write('Este dashboard apresenta uma análise detalhada das operações portuárias baseadas em um conjunto de dados contendo informações de cargas movimentadas ao longo dos anos.')
+
+# Análise Temporal
+st.header('Análise Temporal')
+fig1 = px.line(df, x='Mes', y='Toneladas', color='Ano', title='Volume de Carga ao Longo do Tempo')
+st.plotly_chart(fig1)
+st.write('Observamos tendências sazonais significativas, com picos de atividade em determinados meses. Isso pode ser devido a ...')
+
+# Distribuição de Cargas por Berço e Terminal
+st.header('Distribuição de Cargas por Berço e Terminal')
+fig2 = px.bar(df, x='Terminal', y='Toneladas', color='Berco', title='Volume de Carga por Terminal e Berço')
+st.plotly_chart(fig2)
+st.write('Os terminais mais utilizados são ..., indicando a necessidade de ...')
+
+# Perfil da Carga e Tipo de Operação
+st.header('Perfil da Carga e Tipo de Operação')
+fig3 = px.scatter(df, x='PerfilCarga', y='Toneladas', color='TipoOperacao', size='Toneladas', title='Distribuição das Cargas por Perfil e Tipo de Operação')
+st.plotly_chart(fig3)
+st.write('Podemos ver que operações de ... são predominantes para cargas do tipo ..., sugerindo que ...')
+
+# Fluxo de Navegação e Sentido da Carga
+##st.header('Fluxo de Navegação e Sentido da Carga')
+#fig4 = px.sankey(df, node=dict(label=['Navegação', 'SentidoCarga']), link=dict(source=[...], target=[...], value=[...]))
+#st.plotly_chart(fig4)
+#st.write('O fluxo de cargas entre navegação de cabotagem e longo curso mostra que ...')
+
+# Tipo de Instalação e Volume de Carga
+st.header('Tipo de Instalação e Volume de Carga')
+fig5 = px.pie(df, names='TipoInstalacao', values='Toneladas', title='Volume de Carga por Tipo de Instalação')
+st.plotly_chart(fig5)
+st.write('As instalações mais utilizadas são ..., o que sugere que ...')
+
+# Mapa Geográfico de Cargas Movimentadas
+st.header('Mapa Geográfico de Cargas Movimentadas')
+#fig6 = px.scatter_mapbox(df, lat='Latitude', lon='Longitude', size='Toneladas', color='Terminal', mapbox_style='open-street-map', title='Distribuição Geográfica das Operações Portuárias')
+#st.plotly_chart(fig6)
+st.write('A distribuição geográfica das operações revela que ...')
+
+# Análise de Correlações entre Variáveis
+st.header('Análise de Correlações entre Variáveis')
+corr = df.corr()
+fig7, ax = plt.subplots()
+sns.heatmap(corr, annot=True, cmap='coolwarm', ax=ax)
+st.pyplot(fig7)
+st.write('A matriz de correlação indica que há uma forte relação entre ...')
+
+# Conclusão
+st.header('Conclusão')
+st.write('Com base na análise acima, identificamos que ..., o que nos leva a concluir que ...')
+"""
