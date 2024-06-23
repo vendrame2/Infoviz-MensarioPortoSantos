@@ -26,7 +26,7 @@ def carregaBercosPDZDataFrame():
                             }, inplace=True)
     
     dfPoligono = df.loc[:,'Tipo':'Berco']
-    dfBercosPDZ = df.loc[:,'Berco':]
+    dfBercosPDZ = df.loc[:,'Cais':]
                          
 
 
@@ -62,3 +62,6 @@ def converte_SHP_File_to_GeoJSON_Lat_Long():
     gdf_4326 = gdf.to_crs(epsg='4326')
     # Write to file
     gdf_4326.to_file(json_file, driver="GeoJSON") 
+
+def carregaDeParaBercosMovimentacaoPDZ():
+    return pd.DataFrame(pd.read_csv('./Data/deParaBercoMovimentaBercoPDZ.csv', encoding='utf8', sep=";"))

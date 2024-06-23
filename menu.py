@@ -25,7 +25,7 @@ def unauthenticated_menu():
   st.sidebar.page_link("pages/atracacoes.py", label="Atracações", icon="1️⃣")
   st.sidebar.page_link("pages/portos.py", label="Portos", icon="1️⃣")
   st.sidebar.page_link("pages/terminais.py", label="Terminais", icon="1️⃣")
-  #st.sidebar.page_link("pages/projecoes.py", label="Projeçoes", icon="1️⃣")
+  st.sidebar.page_link("pages/visualizacoes.py", label="Visualizações EDA", icon="1️⃣")
   #st.sidebar.page_link("pages/projecoesProjeto.py", label="Modelos Preditivos", icon="1️⃣")
   #    st.page_link("pages/page_2.py", label="Page 2", icon="2️⃣", disabled=True)
   #    st.page_link("http://www.google.com", label="Google", icon="🌎")

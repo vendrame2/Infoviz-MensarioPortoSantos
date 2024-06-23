@@ -19,18 +19,30 @@ def carregaDadosTerminaisPanorama():
 
     return data_json # Check the JSON Response Content documentation below
 
+def append_row(df, row):
+    return pd.concat([
+                df, 
+                pd.DataFrame([row], columns=row.index)]
+           ).reset_index(drop=True)
+
 def DictToDatasetPanorama():
     
     data_json = carregaDadosTerminaisPanorama()
 
-    dfLocalTerminal = []
+    dfLocalTerminal = pd.DataFrame(columns=("Terminal","Carga","Notas","Tamanho"))
     for i, terminal in enumerate(data_json):
         
-        new_row = [[terminal["nome"], terminal["poligonos"]]]
-        dfLocalTerminal.append(new_row)
+        new_row = pd.Series({
+                    "Terminal": terminal["nome"],
+                    "Carga": terminal["carga"],
+                    "Notas": terminal["notas"],
+                    "Tamanho": terminal["tamanho"],
+                    "Poligonos": terminal["poligonos"]
+                    })
+        dfLocalTerminal = append_row(dfLocalTerminal, new_row)
 
 
-    return dfLocalTerminal    
+    return dfLocalTerminal
 
 def  coordToListTerminais(celulaPoligonos):
     
