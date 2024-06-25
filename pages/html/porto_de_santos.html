@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Porto de Santos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/deck.gl@8.6.2/dist.min.js"></script>
+
+    
+
+
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #deck-canvas { position: absolute; top: 0; bottom: 0; width: 100%; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <canvas id="deck-canvas"></canvas>
+    <script>
+        // Access token for Mapbox
+        mapboxgl.accessToken = 'pk.eyJ1Ijoicm1hZXNoaXJvLXVzcCIsImEiOiJjbGxhdHk4dTQwMHZuM3Rrd3Zia2doYm1tIn0.Y_EI1VjaQRyny3Mvca7G9Q';
+
+        // Initialize the Mapbox map
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            //style: 'mapbox://styles/mapbox/streets-v12', // style URL - dark-v11 https://docs.mapbox.com/api/maps/styles/
+            style: 'mapbox://styles/mapbox/satellite-streets-v11', // URL do estilo para visualização em 3D
+            center: [-46.32, -23.96], // starting position [lng, lat]
+            zoom: 12, // starting zoom
+            pitch: 50, // starting pitch
+            bearing: 0
+        });
+
+        // Enable zoom and rotation controls on the map
+        // Adicionar controles de navegação
+        //const nav = new mapboxgl.NavigationControl();
+        //map.addControl(nav, 'top-right');
+        map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+
+
+        // Adicionar controle de rotação e inclinação
+        map.addControl(new mapboxgl.FullscreenControl());
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }));
+
+
+        // Data for the 3D bars
+        const data = [
+            { name: 'Terminal A', lat: -23.963, lon: -46.318, carga1: 0, carga2: 0, carga3: 12, elevation: 27 },
+            { name: 'Terminal B', lat: -23.956, lon: -46.302, carga1: 20, carga2: 15, carga3: 8, elevation: 43 },
+            { name: 'Terminal C', lat: -23.954, lon: -46.294, carga1: 15, carga2: 10, carga3: 14, elevation: 39 },
+            { name: 'Terminal D', lat: -23.952, lon: -46.286, carga1: 25, carga2: 20, carga3: 10, elevation: 55 }
+        ];
+
+
+        // Função para calcular a elevação total
+        const calculateElevation = (d) => d.carga1 + d.carga2 + d.carga3;
+
+        // Função para calcular a cor da seção
+        const calculateColor = (section) => {
+            switch(section) {
+                case 'carga1':
+                    return [255, 0, 0]; // Red
+                case 'carga2':
+                    return [0, 255, 0]; // Green
+                case 'carga3':
+                    return [0, 0, 255]; // Blue
+                default:
+                    return [255, 255, 255];
+            }
+        };
+
+
+
+        // Deck.gl layer configuration
+        const deckgl = new deck.Deck({
+            canvas: 'deck-canvas',
+            initialViewState: {
+                longitude: -46.32,
+                latitude: -23.96,
+                zoom: 13,
+                pitch: 50,
+                bearing: 0
+            },
+            controller: {
+                dragPan: true,
+                dragRotate: true,
+                scrollZoom: true,
+                doubleClickZoom: true,
+                touchZoomRotate: true
+            },
+            /*
+            layers: [
+                new deck.CompositeLayer({
+                        id: '3d-stacked-bars',
+                        data,
+                        renderLayers: (props) => {
+                            const { data } = props;
+                            return ['carga1', 'carga2', 'carga3'].map((section, i) => new deck.ColumnLayer({
+                                id: `3d-bar-${section}`,
+                                data,
+                                diskResolution: 12,
+                                radius: 50,
+                                extruded: true,
+                                pickable: true,
+                                elevationScale: 1,
+                                getPosition: d => [d.lon, d.lat],
+                                getFillColor: d => calculateColor(section),
+                                getElevation: d => d[section],
+                                getOffset: d => [0, 0, i * 100]
+                            }));
+                        }
+                    })
+            ],*/
+            
+            layers: [
+                new deck.ColumnLayer({
+                    id: '3d-bars',
+                    data,
+                    diskResolution: 12,
+                    radius: 50,
+                    extruded: true,
+                    pickable: true,
+                    elevationScale: 10,
+                    getPosition: d => [d.lon, d.lat],
+                    getFillColor: d => [255, 0, 0],
+                    getElevation: d => d.elevation
+                })
+            ],
+            onViewStateChange: ({ viewState }) => {
+                map.jumpTo({
+                    center: [viewState.longitude, viewState.latitude],
+                    zoom: viewState.zoom,
+                    bearing: viewState.bearing,
+                    pitch: viewState.pitch
+                });
+            }
+        });
+
+
+        // Adicionar uma camada de edifícios 3D
+        map.on('load', () => {
+            
+            map.addLayer({
+                'id': '3d-buildings',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 15,
+                'paint': {
+                    'fill-extrusion-color': '#aaa',
+
+                    // Usa os dados de altura do edifício
+                    'fill-extrusion-height': [
+                        'interpolate', ['linear'], ['zoom'],
+                        15, 0,
+                        15.05, ['get', 'height']
+                    ],
+                    'fill-extrusion-base': [
+                        'interpolate', ['linear'], ['zoom'],
+                        15, 0,
+                        15.05, ['get', 'min_height']
+                    ],
+                    'fill-extrusion-opacity': 0.6
+                }
+            });
+            map.addLayer(deckLayer);
+        });
+
+
+
+
+
+        // Sync the view state between Deck.gl and Mapbox
+        map.on('move', () => {
+            const { lng, lat } = map.getCenter();
+            const zoom = map.getZoom();
+            const bearing = map.getBearing();
+            const pitch = map.getPitch();
+
+            deckgl.setProps({
+                viewState: {
+                    longitude: lng,
+                    latitude: lat,
+                    zoom: zoom,
+                    bearing: bearing,
+                    pitch: pitch
+                }
+            });
+        });
+    </script>
+</body>
+</html>

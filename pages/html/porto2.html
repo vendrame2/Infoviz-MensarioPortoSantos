@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>45° Imagery</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <Style rel="stylesheet" type="text/css">
+
+    /**
+    * @license
+    * Copyright 2019 Google LLC. All Rights Reserved.
+    * SPDX-License-Identifier: Apache-2.0
+    */
+   /* 
+    * Always set the map height explicitly to define the size of the div element
+    * that contains the map. 
+    */
+   #map {
+     height: 100%;
+   }
+   
+   /* 
+    * Optional: Makes the sample page fill the window. 
+    */
+   html,
+   body {
+     height: 100%;
+     margin: 0;
+     padding: 0;
+   }
+   
+
+    </style>
+    <script>
+
+        /**
+        * @license
+        * Copyright 2019 Google LLC. All Rights Reserved.
+        * SPDX-License-Identifier: Apache-2.0
+        */
+        function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -23.95606873631538, lng: -46.30942691864801 },
+            zoom: 20,
+            mapTypeId: "satellite",
+        });
+
+        map.setTilt(60);
+        
+        
+        //Aqui
+        const terminalBTP = { lat: -23.953, lng: -46.292 };
+        // Marcador para o Terminal BTP
+        const marker = new google.maps.Marker({
+            position: terminalBTP,
+            map: map,
+            title: "Terminal BTP - Santos"
+        });
+
+
+
+        }
+
+        window.initMap = initMap;
+
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- 
+      The `defer` attribute causes the script to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises. See
+      https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+      for more information.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>

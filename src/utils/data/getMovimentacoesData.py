@@ -1,12 +1,23 @@
 import pandas as pd
 import numpy as np
 
+import locale
+
+# Ignorar todos os warnings dentro deste contexto
+import warnings
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
 
 #Carrega dados
 def carregaMovimentacao():
     movimentacao = pd.DataFrame(pd.read_csv('./Data/raw/combined_file.csv', encoding='utf8', sep=","))
 
+    movimentacao["Toneladas"] = movimentacao["Toneladas"].round(2)
 
+    
+
+    
+    
 
     movimentacao['Data'] = pd.to_datetime(movimentacao['Ano'].astype(str) + 
                                             movimentacao['Mes'].astype(str), format='%Y%m')
@@ -94,6 +105,10 @@ def carregaMovimentacao():
 
     # Cria Nova Coluna: Agrupamento por Terminal / Recinto Alfandegado
     movimentacao['TerminalAjustado'] = movimentacao['Terminal']
+
+    
+    movimentacao['TerminalAjustado'].replace('DEICMAR', 'BANDEIRANTES-DEICMAR', inplace=True)
+
     movimentacao['TerminalAjustado'].replace('VOPAK (ILHA)', 'VOPAK', inplace=True)
     movimentacao['TerminalAjustado'].replace('VOPAK (ALAMOA)', 'VOPAK', inplace=True)
 

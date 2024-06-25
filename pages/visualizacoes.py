@@ -5,6 +5,9 @@ import plotly.express as px
 import time
 import locale
 
+import warnings
+
+
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
@@ -139,6 +142,8 @@ with tab1:
     movimentoQ = movimentacaoBercos.groupby(
                                         [periodicidade,selected_group]
                                         ).agg({'Toneladas':"sum"}).sort_values(by=[periodicidade,selected_group], ascending=True).reset_index()
+    
+    dsReserva = movimentacaoBercos.copy()
     #st.dataframe(movimentoQ)
     if ligarmaiores:
          
@@ -148,7 +153,7 @@ with tab1:
 
             # Itera sobre cada ano único no DataFrame
             for ano in df[periodicidade].unique():
-                #print(ano)
+                
                 # Filtra os dados para o ano específico
                 df_ano = df[df[periodicidade] == ano]
                 
@@ -170,9 +175,27 @@ with tab1:
         #st.dataframe(movimentoQ)
 
 
-    fig = px.bar(movimentoQ, x=periodicidade, y="Toneladas", color=selected_group)
+    
+
 
     if periodicidade == "Ano":
+            
+
+
+            #movimentoQ['Percentual'] = movimentoQ['Toneladas'].pct_change() * 100
+            movimentoQ['Toneladas_M'] = (movimentoQ['Toneladas'] / 1000000).round(2)
+
+            fig = px.bar(movimentoQ, x=periodicidade, y="Toneladas_M", color=selected_group, #text=(movimentoQ['Toneladas']/1000000).round(2),
+                         labels={'Toneladas':'Toneladas em Milhões'})
+            
+            fig.update_traces(
+                #texttemplate='%{y:.2f} M',
+                #texttemplate='%{y} M \n(%{customdata:.2f} %)',
+                texttemplate='%{y} M',
+                textposition='auto',
+                #customdata=movimentoQ['Toneladas_M'].fillna(0).tolist()  # Usando fillna para tratar o primeiro valor sem percentual
+            )
+            
             fig.update_xaxes(
             rangeslider_visible=True,
             rangeselector=dict(
@@ -182,11 +205,115 @@ with tab1:
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
-                ])
+                    ])
+                )   
             )
-        )
-    else:
+            
 
+            
+            fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+            evento = st.plotly_chart(fig, key="iris", on_select="rerun")
+            #evento.selection
+
+            def process_selection(selection, campo):
+                # Verifica se há pelo menos dois itens no mesmo legendGroup
+                groups = {}
+                
+                for item in selection['points']:
+                    #legend_group = item.get('customdata', {}).get('legendgroup', None)
+                    legend_group = item.get('legendgroup', None)
+                    if legend_group:
+                        if legend_group not in groups:
+                            groups[legend_group] = []
+                        groups[legend_group].append(item)
+
+                # Se nenhum grupo tem mais de um item
+                for group, items in groups.items():
+                    if len(items) < 2:
+                        st.error(f"É necessário pelo menos mais um item no grupo '{group}'.")
+                        return
+
+                # Seleciona o item com menor e maior valor de x
+                min_x_item = None
+                max_x_item = None
+                for group, items in groups.items():
+                    items_sorted_by_x = sorted(items, key=lambda item: item[campo])
+                    if min_x_item is None or items_sorted_by_x[0][campo] < min_x_item[campo]:
+                        min_x_item = items_sorted_by_x[0]
+                    if max_x_item is None or items_sorted_by_x[-1][campo] > max_x_item[campo]:
+                        max_x_item = items_sorted_by_x[-1]
+
+                return min_x_item, max_x_item, legend_group
+              
+
+
+
+            # Verifica e processa a seleção
+            if 'selection' in evento:
+                if len(evento.selection['points'])<2:
+                    pass
+                else:
+                    min_x_item, max_x_item, legend_group = process_selection(evento.selection,"label")
+                    print(min_x_item)
+                    print(max_x_item)
+                    if min_x_item and max_x_item:
+                        # Criando o novo container com duas colunas
+                        col1, col2 = st.columns([2, 1])
+
+                        # Gráfico de linhas entre o menor e maior valor de x
+                        
+                        filtered_df = dsReserva[
+                                                (dsReserva[periodicidade] >= min_x_item['label']) & 
+                                                (dsReserva[periodicidade] <= max_x_item['label']) &
+                                                (dsReserva[selected_group] == legend_group)
+                                                ].groupby(
+                                                            ["mesAno","Ano"]
+                                                            ).agg({'Toneladas':"sum"}).sort_values(by=["mesAno"], ascending=True).reset_index()
+                        
+                        filtered_df['Toneladas_M'] = (filtered_df['Toneladas'] / 1000000).round(2)
+                        print(filtered_df)
+                        fig_lines = px.line(filtered_df, x="mesAno", y='Toneladas_M',text="Toneladas_M", width=1000,height=400 )
+                        fig_lines.update_traces(textposition="top center", 
+                                            
+                                                marker=dict(line=dict(color='gray', width=1)))
+                        col1.plotly_chart(fig_lines, use_container_width=True)
+
+                        # Gráfico indicador com volume de toneladas e índice de crescimento/retração
+                        import plotly.graph_objects as go
+                        fig_indicator = go.Figure()
+
+                        
+
+                        toneladasMax = filtered_df.loc[filtered_df['Ano'] == max_x_item["label"], 'Toneladas_M'].sum()
+                        toneladasMin = filtered_df.loc[filtered_df['Ano'] == min_x_item["label"], 'Toneladas_M'].sum()                                  
+
+                        #crescimento =  (1-(toneladasMax/toneladasMin))*100
+                        crescimento = ((toneladasMax - toneladasMin) / toneladasMin     )*100
+                        st.write(crescimento)
+                        # Criando o componente de indicador com Graph Objects
+                        fig_indicator = go.Figure(go.Indicator(
+                            mode='number+delta',
+                            value=toneladasMax,
+                            delta={'reference': toneladasMin, 'relative': True},
+                            title='Crescimento em  Tons',
+                            domain={'row': 0, 'column': 1},
+                            number={'suffix': 'M'}
+                        ))
+
+                        # Configurando layout do indicador
+                        fig_indicator.update_layout(
+                            grid={'rows': 1, 'columns': 2, 'pattern': "independent"},
+                            template={'data': {'indicator': [{'title': {'text': "Toneladas"}}]}}
+                        )
+                        col2.plotly_chart(fig_indicator, use_container_width=True)  
+                        
+            
+            
+
+
+
+    else:
+        fig = px.bar(movimentoQ, x=periodicidade, y="Toneladas", color=selected_group)
         fig.update_xaxes(
             rangeslider_visible=True,
             rangeselector=dict(
@@ -201,8 +328,8 @@ with tab1:
             )
         )
 
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    st.plotly_chart(fig, use_container_width=True)
+        fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+        st.plotly_chart(fig, use_container_width=True)
 
 
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photorealistic 3D Maps in Maps JavaScript Polygon Demo</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      gmp-map-3d {
+        height: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <gmp-map-3d center="-23.95606873631538,-46.30942691864801" heading="30" tilt="55" range="5000">
+      <gmp-polygon-3d altitude-mode="relative-to-ground" fill-color="#666" fill-opacity="0.5" stroke-color="#ffffff" stroke-width="3" extruded><gmp-polygon-3d>
+    </gmp-map-3d>
+
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2Ztmpif4i2Q3NtVDz4NqraRwkacT3QsA&v=alpha&libraries=maps3d"></script>
+
+    <script>
+      const polygon = document.querySelector('gmp-polygon-3d');
+                    
+        customElements.whenDefined(polygon.localName).then(() => {
+            polygon.outerCoordinates = [
+                {lat:  -23.94986, lng: -46.31384, altitude: 20},
+                {lat:  -23.94780, lng:-46.314199, altitude: 20},
+                {lat:  -23.947865, lng:-46.314611, altitude: 20},
+                {lat:  -23.94992, lng:-46.314258, altitude: 20},
+                {lat:  -23.949863, lng:-46.313848, altitude: 20}
+                ];
+      });
+      /*
+      const polygon2 = document.querySelector('gmp-polygon-3d');
+            
+            customElements.whenDefined(polygon2.localName).then(() => {
+                polygon2.outerCoordinates = [
+                {lat:  -23.949942, lng: -46.314421, altitude: 20},
+                {lat:  -23.947887, lng:-46.314771, altitude: 20},
+                {lat:  -23.947947, lng:-46.315182, altitude: 20},
+                {lat:  -23.950002, lng:-46.314831, altitude: 20},
+                {lat:  -23.949942, lng:-46.314421, altitude: 20}
+                    ];
+            });
+    */
+    </script>
+  </body>
+</html>

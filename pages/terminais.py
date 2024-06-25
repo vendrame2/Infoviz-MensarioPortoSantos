@@ -35,21 +35,6 @@ m.add_child(minimap)
 
 
 
-#folium.TileLayer(
-#                tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-#                attr = 'Esri',
-#                name = 'Esri Satellite', 
-#                overlay = True,
-#                control = True,
-#                subdomains=["mt0", "mt1", "mt2", "mt3"]).add_to(m)
-#folium.TileLayer("https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", 
-#                 attr="google", 
-#                 name="Google Maps", 
-#                 overlay=True, 
-#                 control=True, 
-#                 subdomains=["mt0", "mt1", "mt2", "mt3"]).add_to(m)
-
-
 LocaisTerminais = carregaDadosTerminaisPanorama.DictToDatasetPanorama()
 
 folium.TileLayer(
@@ -94,11 +79,11 @@ folium.TileLayer(
     subdomains=["mt0", "mt1", "mt2", "mt3"]).add_to(m)
 
 
+#st.dataframe(LocaisTerminais["Terminal"])
 
+for i, terminal in LocaisTerminais.iterrows():
 
-for i, terminal in enumerate(LocaisTerminais):
-            
-            html = "<div style='font-face:tahoma;font-size:10pt'><b> "+ str(terminal[0][0]) +"</b></div><br>"
+            html = "<div style='font-face:tahoma;font-size:10pt'><b> "+ terminal["Terminal"] +"</b></div><br>"
             html = html + "<div style='font-face:tahoma;font-size:9pt'><b>Coordenadas: </b> s" + "<br>"
             html = html + "<b>R$: </b>" + "xx" + "</div>"
 
@@ -112,7 +97,7 @@ for i, terminal in enumerate(LocaisTerminais):
                             'color': 'red',#cor da linha de contorno
                             'weight': 0.1, #espessura da linha
                         }
-            folium.GeoJson(carregaDadosTerminaisPanorama.coordToListTerminais(terminal[0][1]), name=terminal[0][0], tooltip=terminal[0][0], style_function=lambda x:style, popup=popup).add_to(m)
+            folium.GeoJson(carregaDadosTerminaisPanorama.coordToListTerminais(terminal["Poligonos"] ), name=terminal["Terminal"] , tooltip=terminal["Terminal"] , style_function=lambda x:style, popup=popup).add_to(m)
 #"ROADMAP": 
 
 folium.LayerControl(position='topright', collapsed=False, autoZIndex=True).add_to(m)

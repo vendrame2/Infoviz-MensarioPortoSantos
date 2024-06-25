@@ -45,6 +45,7 @@ def DictToDatasetPanorama():
     return dfLocalTerminal
 
 def  coordToListTerminais(celulaPoligonos):
+
     
     from shapely.geometry import Polygon
     
@@ -59,4 +60,8 @@ def  coordToListTerminais(celulaPoligonos):
         
         polygon_geom = Polygon(zip(lat_point_list,lon_point_list))
     
-    return polygon_geom           
+    return polygon_geom          
+
+
+def carregaDeParaTerminaisPanoramaMovimentacao():
+    return pd.DataFrame(pd.read_csv('./Data/deParaPanoramaMovimentacao.csv', encoding='utf8', sep=";"))
