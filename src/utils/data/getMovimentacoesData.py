@@ -3,10 +3,7 @@ import numpy as np
 
 import locale
 
-# Ignorar todos os warnings dentro deste contexto
-import warnings
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
+
 
 #Carrega dados
 def carregaMovimentacao():

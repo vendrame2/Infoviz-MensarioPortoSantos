@@ -73,13 +73,12 @@ dfPoligono, dfBercosPDZ = bercos.carregaBercosPDZDataFrame()
     #print(dfBercosPDZ)
 
 deParaBercosDadosPDZ = pd.merge(deParaBercos, dfBercosPDZ,left_on="BercoPDZ", right_on="Berco", how='outer' )
-st.dataframe(deParaBercosDadosPDZ)
+
      
 
 #Identificação dos terminais (Página do Panorama do Porto de Santos)
 LocaisTerminais = carregaDadosTerminaisPanorama.DictToDatasetPanorama()
-#LocaisTerminais = pd.json_normalize(LocaisTerminais[0][0])
-st.dataframe(LocaisTerminais)
+
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -136,44 +135,6 @@ fig.update_xaxes(
 
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 st.plotly_chart(fig, use_container_width=True)
-
-
-
-################### MAPA
-
-fig2 = px.scatter_mapbox(movimentoQ,
-                        animation_frame = 'mesAno', animation_group = selected_group, 
-                        lat="Latitude", 
-                        lon="Longitude", 
-                        hover_name=selected_group, 
-                        hover_data=[selected_group, "Toneladas"],
-                        color_continuous_scale=px.colors.cyclical.Edge,
-                        size="Toneladas",
-                        size_max=70, 
-                        title = 'XXXXX em Terminais Portuários',
-                        zoom=12, 
-                        height=600,
-                        width=1920)
-
-fig2.update_layout(mapbox_style="open-street-map")
-fig2.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-st.plotly_chart(fig2, use_container_width=True)
-
-
-
-_top = movimentoQ.nlargest(qtd, 'Toneladas')
-fig_bar = px.bar(_top,
-                 x='Toneladas',
-                 y='TerminalAjustado',
-                 orientation='h',
-                 color='Toneladas',
-                 color_continuous_scale="YlOrRd",
-                 title="TOP {qd} {selected_group}",
-                 animation_frame = 'mesAno', 
-                 animation_group = selected_group, 
-                 )
-fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
-st.plotly_chart(fig_bar, use_container_width=True)
 
 
 
