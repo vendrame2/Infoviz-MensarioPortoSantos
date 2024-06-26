@@ -26,7 +26,7 @@ locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 
 
-titulo = 'Modelos de Previsão de demanda para Comodities de Granel Sólido Vegetal para o Porto de Santos, Brasil'
+titulo = 'Estudo: As Transformações do Porto de Santos nos últimos 10 anos'
 st.markdown("<h1 style='text-align: center;'>"+titulo+"</h1>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)

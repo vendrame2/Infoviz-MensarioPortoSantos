@@ -26,51 +26,16 @@ menu.menu()
 #Movimentação
 movimentacao = movimenta.carregaMovimentacao()
 
-
-
 terminaisSantos = terminais.carregaTerminais()
 
 movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
-#def colunasMovimentaGeo():
-    #   Colunas
-    #   Ano
-    #   Mes
-    #   Berco
-    #   TipoInstalacao
-    #   Terminal           
-    #   PerfilCarga  
-    #   TipoOperacao    
-    #   Navegacao      
-    #   SentidoCarga  ...    
-    #   Unidades        
-    #   Data
-    #   TerminalAjustado   
-    #   Latitude  
-    #   Longitude    
-    #   Local         
-    #   Tipo  
-    #   Tamanho 
-    #   TerminalUni
-   #print(movimentacaoGeo)
-
 
 deParaBercos = bercos.carregaDeParaBercosMovimentacaoPDZ()
 #st.dataframe(deParaBercos)
 
 #Identificação dos berços
 dfPoligono, dfBercosPDZ = bercos.carregaBercosPDZDataFrame()
-#def colunasdfBercosPDZ():
-    #Carrega Berços
-    #st.write(dfBercosPDZ["Berco"].unique())
-    #   Colunas
-    #       Cais (Região)*
-    #       Berco
-    #       Descricao
-    #       Comprimento*
-    #       Profundidade* 
-    #       Calado*
-    #       Carga (Tipo)*
-    #print(dfBercosPDZ)
+
 
 deParaBercosDadosPDZ = pd.merge(deParaBercos, dfBercosPDZ,left_on="BercoPDZ", right_on="Berco", how='outer' )
 
