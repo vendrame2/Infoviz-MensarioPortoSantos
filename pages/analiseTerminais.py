@@ -150,7 +150,7 @@ with tab3:
 
         return nodes, sources, targets, values
 
-    cat_cols = ['TipoInstalacao', 'Navegacao', 'PerfilCarga', 'SentidoCarga', 'TerminalAjustado']
+    cat_cols = ['TipoInstalacao', 'Navegacao', 'SentidoCarga', 'PerfilCarga', 'TerminalAjustado']
     value_col = 'Toneladas'
 
     nodes, sources, targets, values = prepare_sankey_data(df, cat_cols, value_col)
