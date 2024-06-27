@@ -21,16 +21,13 @@ def unauthenticated_menu():
 
   st.logo("./src/utils/visualization/img/logoColor.png", icon_image="./src/utils/visualization/img/LogoSbranco.png")
   st.sidebar.page_link("app.py", label="Home", icon="🏠")
-# 
+  st.sidebar.page_link("pages/oQueSabemos.py", label="O que Sabemos do Porto", icon="🏗")
   st.sidebar.page_link("pages/analiseGeralVolumes.py", label="Análise Geral do Volumes", icon="🏗")
   st.sidebar.page_link("pages/analiseCargas.py", label="Análise de Cargas", icon="🚢")
   st.sidebar.page_link("pages/analiseTerminais.py", label="Análise de Terminais", icon="⚓")
   st.sidebar.page_link("pages/terminais.py", label="Localização dos Terminais", icon="🗺️")
-
   st.sidebar.page_link("pages/atracacoes.py", label="Plus: Principais Cargas", icon="📊")
   st.sidebar.page_link("pages/visualizacoes.py", label="Plus: Visual. Dimensões Carga", icon="📊")
-  
-  
   st.sidebar.page_link("pages/about.py", label="Equipe...", icon="🧑🏻‍💻")
 
 

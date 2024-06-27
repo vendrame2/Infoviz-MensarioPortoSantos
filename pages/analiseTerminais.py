@@ -62,7 +62,10 @@ grpTerminal = movimentacaoGeo.query('Ano==2022').groupby('TerminalAjustado').agg
     Qtd_Carga_Distinta=('Carga','nunique'),
     Qtd_Berço=('Berco','nunique')).reset_index().sort_values(by=['Toneladas'], ascending=False)
 
-tab1, tab2, tab3, tab4 = st.tabs(["Qtde Terminais por Volume Movimentado"," Unidades vs Toneladas com Qtd Carga","Fluxo de Carga Movimentada por Terminal","Visão Geolocalizada - Perfil Carga / Ano"])
+tab4, tab1, tab3 = st.tabs(["Visão Geolocalizada - Perfil Carga / Ano",
+                                  "Qtde Terminais por Volume Movimentado",
+                                  #" Unidades vs Toneladas com Qtd Carga",
+                                  "Fluxo de Carga Movimentada por Terminal"])
 with tab1:
 
     import plotly.graph_objs as go
@@ -94,21 +97,7 @@ with tab1:
     fig.update_layout(title_text="Histogramas | Quantidade de Terminais por Volume Movimentado",
                     height=num_rows * 300, width=num_cols * 450)
     st.plotly_chart(fig, use_container_width=True)
-with tab2:
-        # Gráfico de dispersão
-    fig = px.scatter(grpTerminal, x='Unidades', y='Toneladas', size='Qtd_Carga_Distinta',
-        color='TEUs',hover_name='TerminalAjustado',
-        title='Gráfico de Dispersão: Unidades vs Toneladas com Qtd Carga como Tamanho dos Pontos',
-        size_max=50  # Define o tamanho máximo dos círculos
-    )
-    fig.update_layout(
-        #xaxis_title='Número de Unidades',
-        #yaxis_title='Número de TEUs',
-        title_x=0.5,  # Centraliza o título
-        width=800,
-        height=600
-    )
-    st.plotly_chart(fig, use_container_width=True)
+
 with tab3:
     import plotly.graph_objects as go
 
