@@ -32,9 +32,12 @@ from src.utils.data import getMovimentacoesData as movimenta
 from src.utils.data import getTerminaisData as terminais
 
 movimentacao = movimenta.carregaMovimentacao()
+
 terminaisSantos = terminais.carregaTerminais()
 movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
 movimentacaoGeo['Data'] = pd.to_datetime(movimentacaoGeo['Data'])
+
+#st.write( movimentacao[movimentacao["Ano"]==2023 & movimentacao["Mes"]==1].all()["Toneladas"].sum())
 
 st.header("1. Análise Geral do Volumes")
 
@@ -60,13 +63,14 @@ with tabA:
 
 
             # Agrupando os dados por Data
-            grpMov = movimentacaoGeo.groupby(['Data']).agg(Toneladas=('Toneladas','sum')).reset_index()
+            grpMov = movimentacaoGeo.groupby(['Ano','Mes','Data']).agg(Toneladas=('Toneladas','sum')).reset_index()
+            #st.dataframe(grpMov)
             grpMov['Média Móvel 12 Meses'] = grpMov['Toneladas'].rolling(window=12).mean()
             grpMov['Acumulado_12_Meses'] = grpMov['Toneladas'].rolling(window=12).sum()
             grpMov['Acumulado_12_Meses_Ano_Anterior'] = grpMov['Acumulado_12_Meses'].shift(12)
             grpMov['Toneladas YoY %'] = ((grpMov['Acumulado_12_Meses'] / grpMov['Acumulado_12_Meses_Ano_Anterior']) - 1) * 100
             #display(grpMov)
-
+            st.caption(len(grpMov))
             # Gráfico de linha com a evolução do volume movimentado e a média móvel de 12 meses
             fig = px.line(grpMov, x='Data', y=['Toneladas','Média Móvel 12 Meses'])
             fig.update_layout(
@@ -76,7 +80,9 @@ with tabA:
                 xaxis=dict(title='Ano', titlefont_size=16, tickfont_size=14),
                 width=900,
                 height=600)
-            st.plotly_chart(fig, use_container_width=True)
+            
+            #st.plotly_chart(fig, use_container_width=True)
+            st.image(fig)
 
     with tab2:
         #st.dataframe(grpMov)

@@ -45,7 +45,7 @@ with col1:
     
 with col2:
     st.subheader("Denilson Nishida")
-    colA, colB = st.columns([1,2])
+    colA, colB = st.columns([1,1])
     with colA:
         image_url = "https://media.licdn.com/dms/image/C5603AQEzZnLb22Evsw/profile-displayphoto-shrink_800_800/0/1516946577071?e=1724284800&v=beta&t=utC4nh9xpQUmPK9jJMptKWnwjyHb-tIzQS0Nl2kMIk0"
         plotaRoundedImageLink(image_url)

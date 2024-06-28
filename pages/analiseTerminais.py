@@ -171,9 +171,10 @@ with tab4:
 
     terminaisSantos = terminais.carregaTerminais()
     movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
+    st.dataframe(movimentacaoGeo)
     movimentacaoGeo = movimentacaoGeo.drop(columns=movimentacaoGeo.columns[[ 
-                                                                            movimentacaoGeo.columns.get_loc('Tamanho'),
-                                                                            movimentacaoGeo.columns.get_loc('TerminalUni'),
+                                                                            #movimentacaoGeo.columns.get_loc('Tamanho'),
+                                                                            movimentacaoGeo.columns.get_loc('TerminaisPanorama'),
                                                                             movimentacaoGeo.columns.get_loc('Local'),
                                                                             movimentacaoGeo.columns.get_loc('Tipo')
                                                                             ]])
@@ -206,7 +207,7 @@ with tab4:
                                                 (movimentacaoGeo["Ano"] == Ano))].groupby(
                                                 ["Ano", "TerminalAjustado", "Latitude", "Longitude", "PerfilCarga"]
                                                 ).agg({'Toneladas':"sum"}).sort_values(by=["TerminalAjustado"], ascending=True).reset_index()
-
+            
         # HTML e JavaScript para o Mapbox e Deck.gl
         legend_html = '''
             <div style="position: absolute; top: 30px; right: 50px; z-index: 1000; background-color: rgba(255, 255, 255, 0.7); padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: Arial, sans-serif; font-size: small;">
