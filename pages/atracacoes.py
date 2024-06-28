@@ -6,7 +6,7 @@ import time
 import locale
 
 
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 
 #Sources do projeto
 from src.utils.data import getMovimentacoesData as movimenta

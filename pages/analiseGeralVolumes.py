@@ -6,7 +6,7 @@ import locale
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 
 st.set_page_config(
     page_title="Porto de Santos - Movimentação",

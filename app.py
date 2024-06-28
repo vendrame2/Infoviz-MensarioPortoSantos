@@ -19,7 +19,7 @@ st.set_page_config(
 import menu as menu
 menu.menu()
 
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 
 
 
