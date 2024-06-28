@@ -81,8 +81,8 @@ with tabA:
                 width=900,
                 height=600)
             
-            #st.plotly_chart(fig, use_container_width=True)
-            st.image(fig)
+            st.plotly_chart(fig, use_container_width=True)
+            #st.image(fig)
 
     with tab2:
         #st.dataframe(grpMov)
