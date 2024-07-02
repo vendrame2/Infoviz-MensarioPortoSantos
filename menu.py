@@ -13,13 +13,15 @@ def unauthenticated_menu():
   st.html("""
     <style>
       [alt=Logo] {
-        height: 3rem;
+        
+        width: 210px;
+        height:100px;
       }
     </style>
           """)
 
 
-  st.logo("./src/utils/visualization/img/logoColor.png", icon_image="./src/utils/visualization/img/LogoSbranco.png")
+  st.logo("./src/utils/visualization/img/icmc.png")
   st.sidebar.page_link("app.py", label="Home", icon="🏠")
   st.sidebar.page_link("pages/oQueSabemos.py", label="O que Sabemos do Porto", icon="🏗")
   st.sidebar.page_link("pages/analiseGeralVolumes.py", label="Análise Geral do Volumes", icon="🏗")
@@ -36,3 +38,5 @@ def unauthenticated_menu():
 # Classes proprias
 def menu():
     unauthenticated_menu()
+
+    

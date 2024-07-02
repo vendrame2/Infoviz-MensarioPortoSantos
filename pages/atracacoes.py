@@ -45,28 +45,26 @@ deParaBercosDadosPDZ = pd.merge(deParaBercos, dfBercosPDZ,left_on="BercoPDZ", ri
 LocaisTerminais = carregaDadosTerminaisPanorama.DictToDatasetPanorama()
 
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     st.header("Perfl da Carga")
     perfilCarga_list = list(movimentacao["PerfilCarga"].unique())[::-1]
-    selected_perfilCarga = st.multiselect('Selecione o Tipo da Carga', perfilCarga_list,default="CARGA CONTEINERIZADA") 
+    selected_perfilCarga = st.multiselect('Tipo da Carga', perfilCarga_list,default="CARGA CONTEINERIZADA") 
 
 with col2:
-    st.header("Tipo de Instalação")
+    st.header("Instalação")
     tipoInst_list = list(movimentacao["TipoInstalacao"].unique())[::-1]
-    selected_tipoInst = st.multiselect('Selecione o Tipo da Instalacao', tipoInst_list,default="PORTO ORGANIZADO") 
+    selected_tipoInst = st.multiselect('Tipo da Instalacao', tipoInst_list,default="PORTO ORGANIZADO") 
 
 with col3:
     st.header("Agrupamento")
-    selected_group = st.selectbox('Selecione o Tipo de Agrupamento', ["Terminal","Carga"])
+    selected_group = st.selectbox('Tipo de Agrupamento', ["Terminal","Carga"])
     if selected_group == "Terminal": 
         selected_group = "TerminalAjustado" 
     else:
         selected_group = "Carga" 
-with col4:
-    qtd = st.slider("Quantidade de TOPs", 3, 6, 1)
- 
+
 
 
 movimentacaoGeo['DataN'] = pd.to_datetime(movimentacaoGeo['Data'], format='%d%b%Y.%f')

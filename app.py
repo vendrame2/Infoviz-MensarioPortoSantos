@@ -45,3 +45,29 @@ with col2:
             e carga geral (incluindo veículos e maquinários).
             '''
     st.markdown("<p style='text-align: justify;'>"+para0+"</p>", unsafe_allow_html=True)
+
+
+
+import time 
+
+def main():
+    files_directory = 'predefined_files'
+    
+    if 'initialized' not in st.session_state or not st.session_state.initialized:
+        with st.spinner(text='In progress'):
+            time.sleep(1)
+            
+        
+    else:
+        sucesso = st.success('Done')
+        time.sleep(2)
+        sucesso.empty()
+
+    
+
+
+
+
+if __name__ == "__main__":
+
+    main()

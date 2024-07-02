@@ -31,13 +31,12 @@ st.markdown(f"""
 from src.utils.data import getMovimentacoesData as movimenta
 from src.utils.data import getTerminaisData as terminais
 
-movimentacao = movimenta.carregaMovimentacao()
 
-terminaisSantos = terminais.carregaTerminais()
-movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
+movimentacaoGeo = movimenta.carregaMovimentacao()
+#terminaisSantos = terminais.carregaTerminais()
+#movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
 movimentacaoGeo['Data'] = pd.to_datetime(movimentacaoGeo['Data'])
-
-#st.write( movimentacao[movimentacao["Ano"]==2023 & movimentacao["Mes"]==1].all()["Toneladas"].sum())
+movimentacaoGeo.sort_values(by='Data', ascending=True)
 
 st.header("1. Análise Geral do Volumes")
 
@@ -61,17 +60,18 @@ with tabA:
     tab1, tab2, tab3 = st.tabs(["Evolução da Carga Movimentada","Variação da Carga Movimentada","Comparação PIB, Indústria, Serviços e Agro"])
     with tab1:
 
-
             # Agrupando os dados por Data
-            grpMov = movimentacaoGeo.groupby(['Ano','Mes','Data']).agg(Toneladas=('Toneladas','sum')).reset_index()
+            grpMov = movimentacaoGeo.groupby(['Data']).agg(Toneladas=('Toneladas','sum')).reset_index()
             #st.dataframe(grpMov)
             grpMov['Média Móvel 12 Meses'] = grpMov['Toneladas'].rolling(window=12).mean()
             grpMov['Acumulado_12_Meses'] = grpMov['Toneladas'].rolling(window=12).sum()
             grpMov['Acumulado_12_Meses_Ano_Anterior'] = grpMov['Acumulado_12_Meses'].shift(12)
             grpMov['Toneladas YoY %'] = ((grpMov['Acumulado_12_Meses'] / grpMov['Acumulado_12_Meses_Ano_Anterior']) - 1) * 100
             #display(grpMov)
-            st.caption(len(grpMov))
+            #st.caption(len(grpMov))
             # Gráfico de linha com a evolução do volume movimentado e a média móvel de 12 meses
+
+
             fig = px.line(grpMov, x='Data', y=['Toneladas','Média Móvel 12 Meses'])
             fig.update_layout(
                 title='Evolução da Carga (Tons) Movimentadas Mensal e Anualmente',
@@ -82,7 +82,7 @@ with tabA:
                 height=600)
             
             st.plotly_chart(fig, use_container_width=True)
-            #st.image(fig)
+            #st.image("./Images/Evolução da carga movimentada.png")
 
     with tab2:
         #st.dataframe(grpMov)
@@ -96,6 +96,7 @@ with tabA:
         grpMov["Color"] = np.where(grpMov["Toneladas YoY %"]<0, 'red', 'green')
         fig.update_traces(marker_color=grpMov["Color"])
         st.plotly_chart(fig, use_container_width=True)
+        #st.image("./Images/Variação da carga movimentada vs ano anterior YoY.png")
 
     with tab3:
     
@@ -138,6 +139,7 @@ with tabA:
                 width=900,
                 height=600)
             st.plotly_chart(fig, use_container_width=True)
+            #st.image("./Images\Variação da carga movimentada vs ano anterior e indicadores macroeconômicos.png")
 
         with st.expander("Matriz de Correlação"):
 
@@ -150,6 +152,7 @@ with tabA:
 
             # Exibir o gráfico no Streamlit
             st.pyplot(fig)
+            #st.image(".\Images\Heatmap correlação variação carga movimentada e indicadores macroecônomicas.png")
 
         with st.expander("Matriz de Scatterplots"):
             fig = px.scatter_matrix(grpMovTri, dimensions=grpMovTri[['Toneladas YoY %', 'PIB', 'AGROPECUÁRIA', 'INDÚSTRIA', 'SERVIÇOS']],
@@ -161,6 +164,7 @@ with tabA:
                 coloraxis_colorbar=dict(title="Ano"),
                 height=900, width=900)   # Ajustar o tamanho do layout
             st.plotly_chart(fig, use_container_width=True)
+            #st.image(".\Images\Matriz de scatterplots variação da carga movimentada e indicadores macroeconômicos.png")
 
 with tabB:
     col1, col2 = st.columns([1,3])

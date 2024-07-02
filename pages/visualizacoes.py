@@ -76,7 +76,7 @@ deParaBercosDadosPDZ = deParaBercosDadosPDZ.drop(columns=deParaBercosDadosPDZ.co
 movimentacaoBercos = pd.merge(movimentacaoGeo, deParaBercosDadosPDZ,left_on="Berco", right_on="BercoMovimentacao", how='left')
 
 movimentacaoBercos = movimentacaoBercos.drop(columns=movimentacaoBercos.columns[[
-                                                                                movimentacaoBercos.columns.get_loc('TerminalUni'),
+                                                                                #movimentacaoBercos.columns.get_loc('TerminalUni'),
                                                                                 movimentacaoBercos.columns.get_loc('BercoMovimentacao'),
                                                                                 movimentacaoBercos.columns.get_loc('BercoPDZ'),
                                                                                 movimentacaoBercos.columns.get_loc('Carga_y'),

@@ -31,8 +31,9 @@ from src.utils.data import getMovimentacoesData as movimenta
 from src.utils.data import getTerminaisData as terminais
 
 movimentacao = movimenta.carregaMovimentacao()
-terminaisSantos = terminais.carregaTerminais()
-movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
+#terminaisSantos = terminais.carregaTerminais()
+#movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
+movimentacaoGeo = movimentacao
 movimentacaoGeo['Data'] = pd.to_datetime(movimentacaoGeo['Data'])
 
 st.header("2. Análise de Cargas")

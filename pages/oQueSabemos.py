@@ -46,7 +46,8 @@ with col1:
         if st.session_state.current_index == -1:
             st.session_state.current_index = len(image_files)-1
 with col3:
-    pass
+    st.subheader("Os dados do Porto de Santos")
+    st.markdown("**Desafio:** Seria possível à partir do mesmo DATASET  trazer novas visualizações dos dados (insights), possibilitando melhores tomadas de decisão pela Gestão?")
 with col2:
 # Botão para avançar para o próximo slide
     if st.button("Próximo"):
@@ -54,11 +55,13 @@ with col2:
         if st.session_state.current_index >= len(image_files):
             st.session_state.current_index = 0
 
+    
 # Carregar a imagem atual
 current_image = load_image(st.session_state.current_index)
 
 # Mostrar a imagem
+
 st.image(current_image, width=800)
 
-# Mostrar a legenda da imagem
-#st.caption(f"Slide {st.session_state.current_index + 1} de {len(image_files)}")
+
+    

@@ -171,7 +171,7 @@ with tab4:
 
     terminaisSantos = terminais.carregaTerminais()
     movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
-    st.dataframe(movimentacaoGeo)
+    #st.dataframe(movimentacaoGeo)
     movimentacaoGeo = movimentacaoGeo.drop(columns=movimentacaoGeo.columns[[ 
                                                                             #movimentacaoGeo.columns.get_loc('Tamanho'),
                                                                             movimentacaoGeo.columns.get_loc('TerminaisPanorama'),
