@@ -2,20 +2,13 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
-import time
-import locale
-
-
-
-
-
 
 
 #Sources do projeto
 from src.utils.data import getMovimentacoesData as movimenta
 from src.utils.data import getTerminaisData as terminais
 from src.utils.data import getBercosData as bercos
-from src.utils.data import getPanoramaData as carregaDadosTerminaisPanorama
+
 
 st.set_page_config(
     page_title="Port of Santos Container  Visualization",
@@ -34,31 +27,11 @@ movimentacao = movimenta.carregaMovimentacao()
 terminaisSantos = terminais.carregaTerminais()
 
 movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
-#def colunasMovimentaGeo():
-    #   Colunas
-    #   Ano
-    #   Mes
-    #   Berco
-    #   TipoInstalacao
-    #   Terminal           
-    #   PerfilCarga  
-    #   TipoOperacao    
-    #   Navegacao      
-    #   SentidoCarga  ...    
-    #   Unidades        
-    #   Data
-    #   TerminalAjustado   
-    #   Latitude  
-    #   Longitude    
-    #   Local         
-    #   Tipo  
-    #   Tamanho 
-    #   TerminalUni
-   #print(movimentacaoGeo)
+
 
 
 deParaBercos = bercos.carregaDeParaBercosMovimentacaoPDZ()
-#st.dataframe(deParaBercos)
+
 
 #Identificação dos berços
 dfPoligono, dfBercosPDZ = bercos.carregaBercosPDZDataFrame()
@@ -254,8 +227,8 @@ with tab1:
                     pass
                 else:
                     min_x_item, max_x_item, legend_group = process_selection(evento.selection,"label")
-                    print(min_x_item)
-                    print(max_x_item)
+                    #print(min_x_item)
+                    #print(max_x_item)
                     if min_x_item and max_x_item:
                         # Criando o novo container com duas colunas
                         col1, col2 = st.columns([2, 1])
@@ -271,7 +244,7 @@ with tab1:
                                                             ).agg({'Toneladas':"sum"}).sort_values(by=["mesAno"], ascending=True).reset_index()
                         
                         filtered_df['Toneladas_M'] = (filtered_df['Toneladas'] / 1000000).round(2)
-                        print(filtered_df)
+                        #print(filtered_df)
                         fig_lines = px.line(filtered_df, x="mesAno", y='Toneladas_M',text="Toneladas_M", width=1000,height=400 )
                         fig_lines.update_traces(textposition="top center", 
                                             

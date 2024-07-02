@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
-import time
-import locale
+
 
 
 
@@ -30,19 +29,19 @@ terminaisSantos = terminais.carregaTerminais()
 
 movimentacaoGeo = pd.merge(movimentacao, terminaisSantos,on='Terminal', how='left' )
 
-deParaBercos = bercos.carregaDeParaBercosMovimentacaoPDZ()
+#deParaBercos = bercos.carregaDeParaBercosMovimentacaoPDZ()
 #st.dataframe(deParaBercos)
 
 #Identificação dos berços
-dfPoligono, dfBercosPDZ = bercos.carregaBercosPDZDataFrame()
+#dfPoligono, dfBercosPDZ = bercos.carregaBercosPDZDataFrame()
 
 
-deParaBercosDadosPDZ = pd.merge(deParaBercos, dfBercosPDZ,left_on="BercoPDZ", right_on="Berco", how='outer' )
+#deParaBercosDadosPDZ = pd.merge(deParaBercos, dfBercosPDZ,left_on="BercoPDZ", right_on="Berco", how='outer' )
 
      
 
 #Identificação dos terminais (Página do Panorama do Porto de Santos)
-LocaisTerminais = carregaDadosTerminaisPanorama.DictToDatasetPanorama()
+#LocaisTerminais = carregaDadosTerminaisPanorama.DictToDatasetPanorama()
 
 
 col1, col2, col3 = st.columns(3)
