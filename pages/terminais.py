@@ -2,16 +2,16 @@ import folium.map
 import streamlit as st
 
 from streamlit_folium import st_folium
-import json
+
 import plotly.graph_objects as go
-import pandas as pd
-import pprint as pp
-import geopandas as gpd
-import plotly.express as px
+#import pandas as pd
+#import pprint as pp
+#import geopandas as gpd
+#import plotly.express as px
 import plotly.graph_objs as go
-from urllib.request import urlopen 
-import geopandas as gpd
-from shapely.geometry import Polygon
+#from urllib.request import urlopen 
+#import geopandas as gpd
+#from shapely.geometry import Polygon
 from folium import plugins
 import folium
 
@@ -32,7 +32,7 @@ minimap = plugins.MiniMap()
 m.add_child(minimap)
 
 
-coresTipoTerminais = carregaDadosTerminaisPanorama.carregaCoresTipoTerminaisPanorama()
+#coresTipoTerminais = carregaDadosTerminaisPanorama.carregaCoresTipoTerminaisPanorama()
 #st.write(coresTipoTerminais)
 
 
@@ -124,7 +124,7 @@ for tipo in tipos_carga:
 
 
             html = "<div style='font-face:tahoma;font-size:10pt'><b> "+ terminal["Terminal"] +"</b></div><br>"
-            html = html + "<div style='font-face:tahoma;font-size:9pt'><b>Coordenadas:"+terminal["Cor"]+" </b> s" + "<br>"
+            html = html + "<div style='font-face:tahoma;font-size:9pt'><b></b> s" + "<br>"
             html = html + "<b>R$: </b>" + "xx" + "</div>"
 
             iframe = folium.IFrame(html)
