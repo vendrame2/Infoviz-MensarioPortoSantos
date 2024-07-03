@@ -14,9 +14,25 @@ URLCores = "https://www.portodesantos.com.br/conheca-o-porto/panorama/?tipo=core
 def carregaDadosTerminaisPanorama():
     
     # store the response of URL 
-    response = urlopen(URL) 
 
-    data_json = json.loads(response.read()) 
+    #response = urlopen(URL) 
+
+    #data_json = json.loads(response.read()) 
+
+    import ssl
+
+    from urllib.request import urlopen
+
+    # Criar um contexto SSL que ignora a verificação do certificado
+    context = ssl._create_unverified_context()
+
+    # Abrir a URL com o contexto SSL personalizado
+    response = urlopen(URL, context=context)
+
+    data_json = json.loads(response.read())
+
+
+
 
     return data_json # Check the JSON Response Content documentation below
 
