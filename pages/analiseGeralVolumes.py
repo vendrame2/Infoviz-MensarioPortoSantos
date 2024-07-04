@@ -81,6 +81,12 @@ with tabA:
                 width=900,
                 height=600)
             
+            # Atualizando a cor da linha 'Média Móvel 12 Meses' para vermelho
+            fig.for_each_trace(
+                lambda trace: trace.update(line=dict(color='red')) if trace.name == 'Média Móvel 12 Meses' else ()
+            )
+
+            
             st.plotly_chart(fig, use_container_width=True)
             #st.image("./Images/Evolução da carga movimentada.png")
 
