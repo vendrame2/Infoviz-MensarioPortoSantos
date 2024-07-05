@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
-import locale
+
 
 
 
@@ -270,7 +270,7 @@ with tabB:
         st.plotly_chart(fig, use_container_width=True)
     with tab4:
         # Agrupando os dados de um ano fechado
-        grpTerminalCarga = movimentacaoGeo.query('Ano==2022').groupby(['TerminalAjustado','Carga']).agg(Toneladas=('Toneladas','sum'),).reset_index()
+        grpTerminalCarga = movimentacaoGeo.query('Ano==2022 & TerminalAjustado != "OUTROS" & Carga != "OUTRAS MERCADORIAS"').groupby(['TerminalAjustado','Carga']).agg(Toneladas=('Toneladas','sum'),).reset_index()
         df = grpTerminalCarga.nlargest(30, 'Toneladas')
 
         # Pivotar os dados para criar uma tabela de terminais vs cargas
