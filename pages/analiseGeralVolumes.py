@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
+import locale
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -76,14 +77,17 @@ with tabA:
                 title='Evolução da Carga (Tons) Movimentadas Mensal e Anualmente',
                 xaxis_tickfont_size=14,
                 yaxis=dict(title='Toneladas', titlefont_size=16, tickfont_size=14),
-                xaxis=dict(title='Ano', titlefont_size=16, tickfont_size=14 ),
+                xaxis=dict(title='Ano', titlefont_size=16, tickfont_size=14),
                 width=900,
                 height=600)
+            
             # Atualizando a cor da linha 'Média Móvel 12 Meses' para vermelho
             fig.for_each_trace(
                 lambda trace: trace.update(line=dict(color='red')) if trace.name == 'Média Móvel 12 Meses' else ()
             )
-            st.plotly_chart(fig,use_container_width=True)
+
+            
+            st.plotly_chart(fig, use_container_width=True)
             #st.image("./Images/Evolução da carga movimentada.png")
 
     with tab2:
