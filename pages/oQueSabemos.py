@@ -2,10 +2,6 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 
-import locale
-
-
-
 
 st.set_page_config(
     page_title="Porto de Santos - Movimentação",
@@ -27,7 +23,7 @@ from PIL import Image
 import os
 camImages = "./src/utils/visualization/img/"
 # Lista das imagens (nomes dos arquivos)
-image_files = ["Slide3.JPG", "Slide5.JPG", "Slide6.JPG","Mensario1.png"]
+image_files = ["Slide3.JPG", "Slide5.JPG", "Slide6.JPG","mensario1.png"]
 image_folder = "./src/utils/visualization/img/"
 
 # Função para carregar a imagem atual
