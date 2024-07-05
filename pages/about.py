@@ -10,7 +10,17 @@ import menu as menu
 menu.menu()
 
 camImg = "./src/utils/visualization/img/equipe/"   
-    
+
+caption = "Trabalho para a disciplina MAI5017 – Visualização de Informação, ministrada pelo prof. Dr. Afonso Paiva, para o curso de Mestrado Profissional MECAI no ICMC/USP, 2º semestre de 2024."
+mark = """
+                <div style="text-align: justify;font-face: tahoma;font-size:12pt;padding: 10px;">
+                    <b>""" + caption + """</b> .
+                </div>
+                """
+st.markdown(""+mark+"", unsafe_allow_html=True)
+
+st.divider()
+
 col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("Luiz Vendrame")
